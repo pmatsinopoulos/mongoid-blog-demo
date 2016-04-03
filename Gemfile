@@ -36,6 +36,10 @@ gem 'waterdrop'
 
 gem "mongoid_blog_demo_domain_model", path: "../mongoid_blog_demo_domain_model"
 
+gem 'rake', '~>10.4'
+
+gem 'ruby-kafka'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   # gem 'byebug'
@@ -50,3 +54,4 @@ group :development do
   gem 'spring'
 end
 
+gem 'puma'
