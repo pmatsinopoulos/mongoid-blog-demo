@@ -32,13 +32,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
-gem 'waterdrop'
-
 gem "mongoid_blog_demo_domain_model", path: "../mongoid_blog_demo_domain_model"
 
 gem 'rake', '~>10.4'
-
-gem 'ruby-kafka'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

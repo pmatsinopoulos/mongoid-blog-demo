@@ -1,0 +1,12 @@
+development:
+  waterdrop:
+    send_messages: true
+    connection_pool_size: 20
+    connection_pool_timeout: 1
+    config.kafka_hosts:
+      - localhost:9092
+    config.raise_on_failure: true
+
+test:
+
+production:

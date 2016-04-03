@@ -1,3 +1,47 @@
+<script src="https://js.pusher.com/3.0/pusher.min.js"></script>
+
+<script>
+  // Enable pusher logging - don't include this in production
+//  Pusher.log = function(message) {
+//    if (window.console && window.console.log) {
+//      window.console.log(message);
+//    }
+//  };
+//
+//  var pusher = new Pusher('c3716dab62eece3f45f6', {
+//    cluster: 'eu',
+//    encrypted: true
+//  });
+//
+//  var $message_to_user = $('#message-to-user');
+//
+//  var channel = pusher.subscribe('test_ack');
+//  console.log("about to call bind on channel");
+//  channel.bind('my_event', function(data) {
+//    console.log("bind function is now triggered: " + data.message);
+//    $message_to_user.html(data.message);
+//    alert('hello');
+//  });
+  // Enable pusher logging - don't include this in production
+  Pusher.log = function(message) {
+    if (window.console && window.console.log) {
+      window.console.log(message);
+    }
+  };
+
+  var pusher = new Pusher('pusher public id', {
+    cluster: 'eu',
+    encrypted: true
+  });
+
+  var $message_to_user = $('#message-to-user');
+
+  var channel = pusher.subscribe('test_ack');
+  channel.bind('my_event', function(data) {
+    $message_to_user.html(data.message);
+  });
+</script>
+
 <p id="notice"><%= notice %></p>
 
 <h1>Listing Authors</h1>
@@ -25,3 +69,4 @@
 <br>
 
 <%= link_to 'New Author', new_author_path %>
+

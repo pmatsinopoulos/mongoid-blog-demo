@@ -26,7 +26,7 @@ class AuthorsController < ApplicationController
   def create
     respond_to do |format|
       if AuthorManager.new(author_params).create
-        format.html { redirect_to authors_url, notice: 'Author was successfully created.' }
+        format.html { redirect_to authors_url }
         format.json { render :show, status: :created, location: @author }
       else
         format.html { render :new }
