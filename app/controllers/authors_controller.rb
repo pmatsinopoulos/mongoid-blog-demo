@@ -1,10 +1,13 @@
 class AuthorsController < ApplicationController
   before_action :set_author, only: [:show, :edit, :update, :destroy]
 
+  # respond_to :html, :js
+
   # GET /authors
   # GET /authors.json
   def index
     @authors = Author.all
+    @author  = Author.new
   end
 
   # GET /authors/1
@@ -24,14 +27,10 @@ class AuthorsController < ApplicationController
   # POST /authors
   # POST /authors.json
   def create
-    respond_to do |format|
-      if AuthorManager.new(author_params).create
-        format.html { redirect_to authors_url }
-        format.json { render :show, status: :created, location: @author }
-      else
-        format.html { render :new }
-        format.json { render json: @author.errors, status: :unprocessable_entity }
-      end
+    if AuthorManager.new(author_params).create
+      head :ok
+    else
+      head :unprocessable_entity
     end
   end
 
@@ -57,6 +56,11 @@ class AuthorsController < ApplicationController
       format.html { redirect_to authors_url, notice: 'Author was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def author_partial
+    @author = Author.find(params[:id])
+    render layout: false
   end
 
   private

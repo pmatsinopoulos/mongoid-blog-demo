@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  resources :authors
+  resources :authors do
+    get "partial", on: :member, action: :author_partial
+  end
   resources :articles do
     resources :comments
   end

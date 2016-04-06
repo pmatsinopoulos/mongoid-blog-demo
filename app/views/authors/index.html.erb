@@ -2,43 +2,36 @@
 
 <script>
   // Enable pusher logging - don't include this in production
-//  Pusher.log = function(message) {
-//    if (window.console && window.console.log) {
-//      window.console.log(message);
-//    }
-//  };
-//
-//  var pusher = new Pusher('c3716dab62eece3f45f6', {
-//    cluster: 'eu',
-//    encrypted: true
-//  });
-//
-//  var $message_to_user = $('#message-to-user');
-//
-//  var channel = pusher.subscribe('test_ack');
-//  console.log("about to call bind on channel");
-//  channel.bind('my_event', function(data) {
-//    console.log("bind function is now triggered: " + data.message);
-//    $message_to_user.html(data.message);
-//    alert('hello');
-//  });
-  // Enable pusher logging - don't include this in production
   Pusher.log = function(message) {
     if (window.console && window.console.log) {
       window.console.log(message);
     }
   };
 
-  var pusher = new Pusher('pusher public id', {
+  var pusher = new Pusher('c3716dab62eece3f45f6', {
     cluster: 'eu',
     encrypted: true
   });
 
   var $message_to_user = $('#message-to-user');
 
-  var channel = pusher.subscribe('test_ack');
+  var channel = pusher.subscribe('domain_model_ack');
   channel.bind('my_event', function(data) {
     $message_to_user.html(data.message);
+
+    // {"message":"author Peter created"}
+    var name = JSON.parse(data.message)['message'].split(' ')[1];
+    console.log('name: ' + name);
+    // Get from server what needs to be added
+    var url = "authors/" + name + "/partial";
+    $.ajax({
+      url: url,
+      success: function(data, status) {
+        console.log(data);
+        $('#accounts-table tbody').append(data);
+      }
+    });
+
   });
 </script>
 
@@ -46,7 +39,7 @@
 
 <h1>Listing Authors</h1>
 
-<table>
+<table id="accounts-table">
   <thead>
     <tr>
       <th>Name</th>
@@ -56,17 +49,17 @@
 
   <tbody>
     <% @authors.each do |author| %>
-      <tr>
-        <td><%= author.name %></td>
-        <td><%= link_to 'Show', author %></td>
-        <td><%= link_to 'Edit', edit_author_path(author) %></td>
-        <td><%= link_to 'Destroy', author, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <%= render partial: 'authors/author', locals: {author: author} %>
     <% end %>
   </tbody>
 </table>
 
 <br>
 
-<%= link_to 'New Author', new_author_path %>
+<%= link_to 'New Author', new_author_path, id: 'new-author' %>
+
+<%= form_for @author, remote: true, html: {id: 'new-author-form'} do |f| %>
+    <%= f.text_field :name %>
+    <%= f.submit %>
+<% end %>
 
